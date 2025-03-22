@@ -24,14 +24,35 @@ function startTimer() {
 // Navigation logic
 function startQuiz() {
   participantName = document.getElementById('name').value;
+  if (!participantName) {
+    alert("Please enter your name to start the quiz.");
+    return;
+  }
   localStorage.setItem('participantName', participantName);
   window.location.href = 'page-1.html';
 }
 
 function nextPage() {
+  const currentPage = window.location.pathname.split('/').pop();
+  const form = document.getElementById('quiz-form');
+  if (form) {
+    const questions = form.querySelectorAll('.question');
+    let allAnswered = true;
+    questions.forEach((question, index) => {
+      const selectedOption = question.querySelector('input[type="radio"]:checked');
+      if (!selectedOption) {
+        allAnswered = false;
+      }
+    });
+
+    if (!allAnswered) {
+      alert("Please answer all questions before proceeding.");
+      return;
+    }
+  }
+
   saveAnswers(); // Save answers before navigating
 
-  const currentPage = window.location.pathname.split('/').pop();
   if (currentPage === 'index.html') {
     window.location.href = 'page-1.html';
   } else if (currentPage === 'page-1.html') {
@@ -58,7 +79,11 @@ function saveAnswers() {
       userAnswers[questionNumber] = selectedOption ? selectedOption.value : null; // Store null if no answer is selected
     });
   }
-  localStorage.setItem('userAnswers', JSON.stringify(userAnswers)); // Save answers to localStorage
+
+  // Retrieve existing answers from localStorage and merge with current answers
+  const storedAnswers = JSON.parse(localStorage.getItem('userAnswers')) || {};
+  const updatedAnswers = { ...storedAnswers, ...userAnswers }; // Merge stored and current answers
+  localStorage.setItem('userAnswers', JSON.stringify(updatedAnswers)); // Save merged answers to localStorage
 }
 
 // Get page number (1, 2, 3, 4, or 5)
@@ -88,7 +113,9 @@ function calculateScore() {
   for (let i = 1; i <= 25; i++) {
     const question = `q${i}`;
     const userAnswer = userAnswers[question];
-    if (userAnswer && userAnswer === correctAnswers[question]) {
+    const correctAnswer = correctAnswers[question];
+
+    if (userAnswer && userAnswer === correctAnswer) {
       score++;
     }
   }
@@ -97,15 +124,19 @@ function calculateScore() {
 // Display results
 function displayResults() {
   participantName = localStorage.getItem('participantName');
-  userAnswers = JSON.parse(localStorage.getItem('userAnswers')) || {}; // Retrieve answers from localStorage
+  userAnswers = JSON.parse(localStorage.getItem('userAnswers')) || {}; // Retrieve all answers from localStorage
+
   calculateScore();
+
   document.getElementById('participant-name').textContent = participantName;
-  document.getElementById('score').textContent = `${score} / 25`;
+  document.getElementById('score').textContent = `${score} out of 25`; // Show score out of 25
 }
 
 // Finish and End
 function finishQuiz() {
   alert("Thank you for completing the quiz!");
+  localStorage.removeItem('participantName');
+  localStorage.removeItem('userAnswers');
   window.location.href = 'index.html'; // Redirect to the start page
 }
 
