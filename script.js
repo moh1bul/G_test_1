@@ -54,10 +54,8 @@ function saveAnswers() {
     const questions = form.querySelectorAll('.question');
     questions.forEach((question, index) => {
       const selectedOption = question.querySelector('input[type="radio"]:checked');
-      if (selectedOption) {
-        const questionNumber = `q${(getPageNumber() - 1) * 5 + index + 1}`; // Calculate question number globally
-        userAnswers[questionNumber] = selectedOption.value;
-      }
+      const questionNumber = `q${(getPageNumber() - 1) * 5 + index + 1}`; // Calculate question number globally
+      userAnswers[questionNumber] = selectedOption ? selectedOption.value : null; // Store null if no answer is selected
     });
   }
   localStorage.setItem('userAnswers', JSON.stringify(userAnswers)); // Save answers to localStorage
@@ -81,14 +79,16 @@ function calculateScore() {
   const correctAnswers = {
     q1: 'A', q2: 'B', q3: 'A', q4: 'B', q5: 'B', // Page 1 answers
     q6: 'B', q7: 'A', q8: 'B', q9: 'A', q10: 'A', // Page 2 answers
-    q11: 'A', q12: 'A', q13: 'A', q14: 'B', q15: 'A', // Page 3 answers
-    q16: 'B', q17: 'A', q18: 'B', q19: 'B', q20: 'B', // Page 4 answers
+    q11: 'C', q12: 'B', q13: 'C', q14: 'A', q15: 'B', // Page 3 answers
+    q16: 'B', q17: 'A', q18: 'B', q19: 'A', q20: 'B', // Page 4 answers
     q21: 'B', q22: 'A', q23: 'B', q24: 'B', q25: 'A', // Page 5 answers
   };
 
   score = 0;
-  for (const [question, userAnswer] of Object.entries(userAnswers)) {
-    if (userAnswer === correctAnswers[question]) {
+  for (let i = 1; i <= 25; i++) {
+    const question = `q${i}`;
+    const userAnswer = userAnswers[question];
+    if (userAnswer && userAnswer === correctAnswers[question]) {
       score++;
     }
   }
