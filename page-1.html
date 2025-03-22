@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page 1 - Questions</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Page 1 - Questions</h1>
+    <div id="timer">Time Left: 06:00</div>
+    <div id="instructions">
+      <p>Answer the following 5 questions. You have 6 minutes.</p>
+    </div>
+    <form id="quiz-form">
+      <!-- Question 1 -->
+      <div class="question">
+        <p>1. Each of the students ___ responsible for bringing their own books.</p>
+        <label><input type="radio" name="q1" value="A"> is</label>
+        <label><input type="radio" name="q1" value="B"> are</label>
+        <label><input type="radio" name="q1" value="C"> were</label>
+      </div>
+
+      <!-- Question 2 -->
+      <div class="question">
+        <p>2. The bouquet of roses ___ on the table.</p>
+        <label><input type="radio" name="q2" value="A"> smell</label>
+        <label><input type="radio" name="q2" value="B"> smells</label>
+        <label><input type="radio" name="q2" value="C"> smelling</label>
+      </div>
+
+      <!-- Question 3 -->
+      <div class="question">
+        <p>3. Neither my friends nor my brother ___ coming to the party.</p>
+        <label><input type="radio" name="q3" value="A"> is</label>
+        <label><input type="radio" name="q3" value="B"> are</label>
+        <label><input type="radio" name="q3" value="C"> were</label>
+      </div>
+
+      <!-- Question 4 -->
+      <div class="question">
+        <p>4. The news ___ surprising to everyone.</p>
+        <label><input type="radio" name="q4" value="A"> were</label>
+        <label><input type="radio" name="q4" value="B"> was</label>
+        <label><input type="radio" name="q4" value="C"> are</label>
+      </div>
+
+      <!-- Question 5 -->
+      <div class="question">
+        <p>5. One of the boys ___ left his bag in the classroom.</p>
+        <label><input type="radio" name="q5" value="A"> have</label>
+        <label><input type="radio" name="q5" value="B"> has</label>
+        <label><input type="radio" name="q5" value="C"> having</label>
+      </div>
+
+      <!-- Next Button -->
+      <button type="button" onclick="nextPage()">Next</button>
+    </form>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

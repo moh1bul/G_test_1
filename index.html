@@ -3,30 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Timed Test</title>
+  <title>Quiz Instructions</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>Timed Test</h1>
-    <div id="timer">Time Left: 01:00</div>
-    <form id="quiz-form">
-      <div class="question">
-        <p>1. What is the capital of France?</p>
-        <label><input type="radio" name="q1" value="A"> Paris</label>
-        <label><input type="radio" name="q1" value="B"> London</label>
-        <label><input type="radio" name="q1" value="C"> Berlin</label>
-      </div>
-      <div class="question">
-        <p>2. Which planet is known as the Red Planet?</p>
-        <label><input type="radio" name="q2" value="A"> Earth</label>
-        <label><input type="radio" name="q2" value="B"> Mars</label>
-        <label><input type="radio" name="q2" value="C"> Jupiter</label>
-      </div>
-      <button type="submit">Submit</button>
+    <h1>Welcome to the Quiz!</h1>
+    <form id="start-form">
+      <label for="name">Enter your name:</label>
+      <input type="text" id="name" name="name" required>
+      <button type="submit">Start Quiz</button>
     </form>
-    <div id="result" class="hidden">
-      <h2>Your Score: <span id="score"></span></h2>
+    <div id="instructions">
+      <h2>Instructions</h2>
+      <ul>
+        <li>There are 5 pages of questions.</li>
+        <li>Each page has 5 questions and a 6-minute time limit.</li>
+        <li>Total time: 30 minutes.</li>
+        <li>Click "Start Quiz" to begin.</li>
+      </ul>
     </div>
   </div>
   <script src="script.js"></script>

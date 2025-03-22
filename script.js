@@ -1,8 +1,13 @@
 // script.js
-let timeLeft = 60; // 1 minute
+
+// Store participant name and score
+let participantName = "";
+let score = 0;
+
+// Timer logic
+let timeLeft = 360; // 6 minutes in seconds
 let timerInterval;
 
-// Start the timer
 function startTimer() {
   timerInterval = setInterval(() => {
     timeLeft--;
@@ -10,41 +15,58 @@ function startTimer() {
 
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
-      submitQuiz();
+      nextPage();
     }
   }, 1000);
 }
 
-// Submit the quiz
-function submitQuiz() {
-  clearInterval(timerInterval);
-
-  // Calculate score
-  const form = document.getElementById('quiz-form');
-  const answers = {
-    q1: 'A', // Correct answer for question 1
-    q2: 'B', // Correct answer for question 2
-  };
-  let score = 0;
-
-  for (const [question, correctAnswer] of Object.entries(answers)) {
-    const userAnswer = form.querySelector(`input[name="${question}"]:checked`);
-    if (userAnswer && userAnswer.value === correctAnswer) {
-      score++;
-    }
-  }
-
-  // Display result
-  document.getElementById('score').textContent = `${score} / ${Object.keys(answers).length}`;
-  document.getElementById('result').classList.remove('hidden');
-  document.getElementById('quiz-form').classList.add('hidden');
+// Navigation logic
+function startQuiz() {
+  participantName = document.getElementById('name').value;
+  localStorage.setItem('participantName', participantName);
+  window.location.href = 'page-1.html';
 }
 
-// Event listener for form submission
-document.getElementById('quiz-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  submitQuiz();
-});
+function nextPage() {
+  const currentPage = window.location.pathname.split('/').pop();
+  if (currentPage === 'page-1.html') {
+    window.location.href = 'page-2.html';
+  } else if (currentPage === 'page-2.html') {
+    window.location.href = 'page-3.html';
+  } else if (currentPage === 'page-3.html') {
+    window.location.href = 'page-4.html';
+  } else if (currentPage === 'page-4.html') {
+    window.location.href = 'page-5.html';
+  } else if (currentPage === 'page-5.html') {
+    window.location.href = 'results.html';
+  }
+}
 
-// Start the timer when the page loads
-startTimer();
+function restartQuiz() {
+  window.location.href = 'index.html';
+}
+
+// Score calculation logic
+function calculateScore() {
+  // Add logic to calculate score based on user answers
+  score = 5; // Example score
+  document.getElementById('score').textContent = score;
+}
+
+// Start timer on question pages
+if (window.location.pathname.includes('page')) {
+  startTimer();
+}
+
+// Display participant name and score on results page
+if (window.location.pathname.includes('results')) {
+  participantName = localStorage.getItem('participantName');
+  document.getElementById('participant-name').textContent = participantName;
+  calculateScore();
+}
+
+// Event listener for start form
+document.getElementById('start-form')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  startQuiz();
+});
