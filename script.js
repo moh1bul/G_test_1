@@ -15,6 +15,7 @@ function startTimer() {
 
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
+      saveAnswers(); // Save answers before navigating
       nextPage();
     }
   }, 1000);
@@ -28,8 +29,7 @@ function startQuiz() {
 }
 
 function nextPage() {
-  // Save user's answers before navigating
-  saveAnswers();
+  saveAnswers(); // Save answers before navigating
 
   const currentPage = window.location.pathname.split('/').pop();
   if (currentPage === 'index.html') {
@@ -55,9 +55,24 @@ function saveAnswers() {
     questions.forEach((question, index) => {
       const selectedOption = question.querySelector('input[type="radio"]:checked');
       if (selectedOption) {
-        userAnswers[`q${index + 1}`] = selectedOption.value;
+        const questionNumber = `q${(getPageNumber() - 1) * 5 + index + 1}`; // Calculate question number globally
+        userAnswers[questionNumber] = selectedOption.value;
       }
     });
+  }
+  localStorage.setItem('userAnswers', JSON.stringify(userAnswers)); // Save answers to localStorage
+}
+
+// Get page number (1, 2, 3, 4, or 5)
+function getPageNumber() {
+  const currentPage = window.location.pathname.split('/').pop();
+  switch (currentPage) {
+    case 'page-1.html': return 1;
+    case 'page-2.html': return 2;
+    case 'page-3.html': return 3;
+    case 'page-4.html': return 4;
+    case 'page-5.html': return 5;
+    default: return 0;
   }
 }
 
@@ -82,6 +97,7 @@ function calculateScore() {
 // Display results
 function displayResults() {
   participantName = localStorage.getItem('participantName');
+  userAnswers = JSON.parse(localStorage.getItem('userAnswers')) || {}; // Retrieve answers from localStorage
   calculateScore();
   document.getElementById('participant-name').textContent = participantName;
   document.getElementById('score').textContent = `${score} / 25`;
@@ -90,7 +106,6 @@ function displayResults() {
 // Finish and End
 function finishQuiz() {
   alert("Thank you for completing the quiz!");
-  // Optionally, redirect to a thank-you page or close the window
   window.location.href = 'index.html'; // Redirect to the start page
 }
 
